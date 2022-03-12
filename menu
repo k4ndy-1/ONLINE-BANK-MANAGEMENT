@@ -1,0 +1,5 @@
+1]customer : a,m,d,v,s [binary]
+2]account : savings,current,fixed deposit(roi,t,p):a,m,d,v,s [csv]
+3]transanction: withdraw and deposit [mysql]
+4]reports: all the customers [display in any]
+5]exit

@@ -147,28 +147,41 @@ def searchcsv(searchitem):
 					pass
 		
 	csvfile.close()
-def updatecsv():						#
-	f=open("cust.csv",'r',newline='\r')
-	Name=input("Enter name of record to be updated:")
-	found=0
-	r=csv.reader(f)
-	nrec=[]
-	for rec in r:
-		if rec[0]==Name:
-			print("Current record is:",rec)
-			rec[0]=input("Enter a new name:")
-			print("Updated record is",rec)
-			found=1
-		nrec.append(rec)
 
-	if found==0:
-		print("Sorry not found..")
-		f.close()
-	else:
-		f=open('cust.csv','w',newline='\r')
-		w=csv.writer(f)
-		w.writerows(nrec)
-		f.close()
+def updatecsv():						
+	mlist=[]
+	with open('cus.csv','r',newline='\r\n') as file:
+		myFile=csv.reader(file)
+		for row in myFile:
+			mlist.append(row)
+	file.close()
+
+	print("See the details")
+	for i in range(len(mlist)):
+		print('Row'+str(i)+':'+str(mlist[i]))
+
+	editRow=int(input("\n Which details in row to be changed(enter the row no):"))
+	print("Set the new details")
+
+	for i in range(len(mlist[0])):
+		newDetails=input("Enter the new data:")
+		mlist[editRow][i]=newDetails
+
+	for i in range(len(mlist)):
+		print("Row"+str(i)+":"+str(mlist[i]))
+
+	ChangeCsv=input("Enter yes or no?")
+
+	if ChangeCsv=='yes':
+		with open('cus.csv','w+') as file:
+			myFile=csv.writer(file)
+			for i in range(len(mlist)):
+				myFile.writerow(mlist[i])
+
+
+
+
+
 
 
 
@@ -314,9 +327,9 @@ while True:
 			if ch=="1":
 				insertcsv()
 			elif ch=='2':
-				insertcsv()
+				updatecsv()
 			elif ch=="3":
-				searchitem=input("Enter item to be seached for:")
+				searchitem=input("Enter name to be seached for:")
 				searchcsv(searchitem)
 			elif ch=="4":
 				readcsv()
@@ -375,7 +388,7 @@ while True:
 		import pandas as pd
 		import matplotlib.pyplot as plt
 
-		df = pd.read_csv('cus.csv')
+		df = pd.read_csv('cust.csv')
 		x=df['Name']
 		y=df['Amount']
 		plt.xlabel('Name',fontsize=18)

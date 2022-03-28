@@ -54,7 +54,7 @@ def searchfile(r):
 	f.close()
 
 
-def deleterec(r):
+def deleterec(r):				#
 	f=open("cus.dat","rb")
 	reclst=[]
 	while True:
@@ -67,8 +67,10 @@ def deleterec(r):
 	f=open("cus.dat","wb")
 	for x in reclst:
 		if x["AccNo"]==r:
+			print("Deleted!")
 			continue
 		pickle.dump(x,f)
+		
 	f.close()
 
 def update(r,m):
@@ -111,8 +113,8 @@ def readcsv():
 def insertcsv():
 	ans='y'
 	while ans=="y":
-		Name=input("Enter your name")
-		Amount=int(input("Enter amount you want to deposit"))
+		Name=input("Enter your name:")
+		Amount=int(input("Enter amount you want to deposit:"))
 		Account_Type=input("Select type of account(f,c or s):")
 		time=int(input("Enter the time(in years):"))
 
@@ -125,9 +127,9 @@ def insertcsv():
 		elif Account_Type=='c':
 			interest=Amount
 			Net_Balance=interest+Amount
-		with open("cus.csv","a") as csvfile:
+		with open("cus.csv","a",newline='\r\n') as csvfile:
 			writer=csv.writer(csvfile)
-			writer.writerow(["Name","Amount","Account_Type","time","Net_Balance"])
+			
 			writer.writerow([Name,Amount,Account_Type,time,Net_Balance])
 			ans=input("Want more(y or n?)")
 		csvfile.close()		
@@ -142,33 +144,32 @@ def searchcsv(searchitem):
 				if field==searchitem:
 					print(row)
 				else:
-					print("NOT FOUND!")
+					pass
 		
 	csvfile.close()
-def updatecsv():
-	with open("cus.csv",mode="a") as csvfile:
-		mywriter=csv.writer(csvfile,delimiter=",")
-		ans="y"
-		while ans=="y":
-			name=input("Enter the name:")
-			Amount=int(input("Enter amount you want to deposit"))
-			Account_Type=input("Select type of account(f,c,s):")
-			time=int(input("Enter the time(in years):"))
-			if Account_Type=="f":
-				interest=Amount*2/100*time
-				Net_Balance=interest+Amount
-			elif Account_Type=='s':
-				interest=Amount*4/100*time
-				Net_Balance=interest+Amount
-			elif Account_Type=='c':
-				interest=Amount*1/100*time
-				Net_Balance=interest+Amount
-			with open("cus.csv","w") as csvfile:
-				writer=csv.writer(csvfile)
-				writer.writerow(["Name","Amount","Account_Type","time","Net_Balance"])
-				writer.writerow([name,Amount,Account_Type,time,Net_Balance])
-				ans=input("Want more(y or n?)")
-			csvfile.close()		
+def updatecsv():						#
+	f=open("cust.csv",'r',newline='\r')
+	Name=input("Enter name of record to be updated:")
+	found=0
+	r=csv.reader(f)
+	nrec=[]
+	for rec in r:
+		if rec[0]==Name:
+			print("Current record is:",rec)
+			rec[0]=input("Enter a new name:")
+			print("Updated record is",rec)
+			found=1
+		nrec.append(rec)
+
+	if found==0:
+		print("Sorry not found..")
+		f.close()
+	else:
+		f=open('cust.csv','w',newline='\r')
+		w=csv.writer(f)
+		w.writerows(nrec)
+		f.close()
+
 
 
 
@@ -217,7 +218,7 @@ def reportsbin():
 	except EOFError:
 		f.close()
 def reportscsv():
-	with open("cust.csv",'r',newline='\r\n') as fh:
+	with open("cus.csv",'r',newline='\r\n') as fh:
 		creader=csv.reader(fh)
 		print("ALL YOUR CSV RECORDS")
 		for rec in creader:
@@ -310,7 +311,9 @@ while True:
 			print("***************************************************************************************")
 			ch=input("Enter the choice>")
 
-			if ch=="1" or ch=="2":
+			if ch=="1":
+				insertcsv()
+			elif ch=='2':
 				insertcsv()
 			elif ch=="3":
 				searchitem=input("Enter item to be seached for:")
@@ -369,16 +372,14 @@ while True:
 
 #art integration
 	if ch==6:
-		#pyplot program-2
-		import matplotlib.pyplot as plt
 		import pandas as pd
-		df =  pd.read_csv('cust.csv')
-		country_data = df["Name"]
-		medal_data = df["Amount"]
-		colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#8c564b"]
-		explode = (0.1, 0, 0, 0, 0)  
-		plt.pie(medal_data, labels=country_data, explode=explode, colors=colors,
-		autopct='%1.1f%%', shadow=True, startangle=140)
-		plt.title("Gold medal achievements of five most successful\n"+"countries in 2016 Summer Olympics")
+		import matplotlib.pyplot as plt
+
+		df = pd.read_csv('cus.csv')
+		x=df['Name']
+		y=df['Amount']
+		plt.xlabel('Name',fontsize=18)
+		plt.ylabel('Amount(₹)',fontsize=20)
+		plt.bar(x,y)
+
 		plt.show()
-#end

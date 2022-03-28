@@ -1,6 +1,9 @@
 Name,Amount,Account_Type,time,Net_Balance
-aad,100,f,10,160.0
-Name,Amount,Account_Type,time,Net_Balance
-jim,100,s,1,104.0
-Name,Amount,Account_Type,time,Net_Balance
-lim,200,s,5,240.0
+NO,90000,s,15,144000.0
+CHELSEA,5000,f,100,35000
+LOLI,500,f,10,800.0
+KANISHK,500,s,5,600.0
+AV,100,s,5,120.0
+Polly,1000,f,10,1600.0
+Soviet march,500,s,6,620.0
+Vladimir Putin,100000000,f,500,3100000000.0
